@@ -1,0 +1,420 @@
+export const WEEKLY_WORKOUT_SCHEDULE = {
+  monday: {
+    dayName: "Monday",
+    title: "Chest & Triceps",
+    tagline: "Upper Body Push & Arm Sculpt",
+    category: "Strength",
+    color: "pink",
+    estTime: "40-45 mins",
+    icon: "Dumbbell",
+    coverImage: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+    description: "Focus on controlled pushing mechanics and triceps isolation with smooth tempo.",
+    exercises: [
+      {
+        id: "mon-1",
+        name: "Chest Press (Machine or Dumbbell)",
+        targetMuscle: "Pectorals (Chest), Anterior Deltoid",
+        sets: 3,
+        reps: "12 reps",
+        rest: "60-90 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80",
+        instructions: "Lie flat on the bench with feet pressed securely into the floor. Grip the dumbbells or handles at chest height. Exhale as you push upward smoothly without locking elbows, then slowly lower back over 2-3 seconds.",
+        tips: "Keep your shoulder blades retracted and pinched gently together for stability.",
+        commonMistake: "Bouncing weights at bottom or arching lower back excessively."
+      },
+      {
+        id: "mon-2",
+        name: "Incline Dumbbell Press",
+        targetMuscle: "Upper Chest, Front Shoulders",
+        sets: 3,
+        reps: "12 reps",
+        rest: "60-90 sec",
+        difficulty: "Beginner / Intermediate",
+        image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80",
+        instructions: "Set bench to 30-45 degrees angle. Hold moderate dumbbells at shoulder height. Press smoothly upward until arms are almost straight, feeling upper chest engage. Inhale slowly on the return.",
+        tips: "Avoid setting the incline too high (above 45°) to prevent straining the shoulders.",
+        commonMistake: "Flaring elbows out at 90 degrees; keep elbows tucked slightly at 45-60 degrees."
+      },
+      {
+        id: "mon-3",
+        name: "Triceps Pushdown",
+        targetMuscle: "Triceps (Lateral & Medial heads)",
+        sets: 3,
+        reps: "12 reps",
+        rest: "45-60 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80",
+        instructions: "Attach a rope or straight bar to cable machine at high setting. Keep elbows glued by your ribs. Push the cable down until your arms are fully extended, pausing for 1 count to squeeze triceps.",
+        tips: "Control the upward motion; do not let the weight stack pull your elbows upward.",
+        commonMistake: "Leaning over the weight or letting elbows sway back and forth."
+      },
+      {
+        id: "mon-4",
+        name: "Overhead Triceps Extension",
+        targetMuscle: "Triceps (Long head)",
+        sets: 3,
+        reps: "12 reps",
+        rest: "60 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=600&q=80",
+        instructions: "Hold a single dumbbell with both hands overhead, keeping core tight. Lower the dumbbell behind your head by bending only at the elbows. Press back up toward the ceiling.",
+        tips: "Keep elbows pointing forward rather than flaring wide out to the sides.",
+        commonMistake: "Hyperextending the lower back; engage glutes and core to keep spine neutral."
+      }
+    ]
+  },
+  tuesday: {
+    dayName: "Tuesday",
+    title: "Back & Biceps",
+    tagline: "Posture & Upper Body Pull",
+    category: "Strength",
+    color: "lavender",
+    estTime: "40-45 mins",
+    icon: "Activity",
+    coverImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+    description: "Build a strong, elegant back posture and tone your arms with pulling movements.",
+    exercises: [
+      {
+        id: "tue-1",
+        name: "Lat Pulldown",
+        targetMuscle: "Latissimus Dorsi, Upper Back",
+        sets: 3,
+        reps: "12 reps",
+        rest: "60-90 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=600&q=80",
+        instructions: "Sit snugly under knee pads. Grip bar slightly wider than shoulder width. Lean back very slightly (10-15°), pull bar down towards upper chest while leading with your elbows.",
+        tips: "Imagine pulling through your elbows, squeezing shoulder blades together at bottom.",
+        commonMistake: "Swinging entire torso backward for momentum."
+      },
+      {
+        id: "tue-2",
+        name: "Seated Cable Row",
+        targetMuscle: "Rhomboids, Mid-Back, Lats",
+        sets: 3,
+        reps: "12 reps",
+        rest: "60-90 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=600&q=80",
+        instructions: "Sit with soft knees on footplates. Maintain a tall spine. Pull handle towards your belly button while squeezing your shoulder blades together. Slowly extend back.",
+        tips: "Keep chest proud and shoulders down away from ears.",
+        commonMistake: "Rounding the upper back during the release or shrugging shoulders."
+      },
+      {
+        id: "tue-3",
+        name: "Dumbbell Bicep Curl",
+        targetMuscle: "Biceps Brachii",
+        sets: 3,
+        reps: "12 reps",
+        rest: "45-60 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80",
+        instructions: "Stand tall holding dumbbells by sides, palms facing forward. Curl weights toward shoulders while keeping elbows stationary against your ribs. Squeeze biceps at the top.",
+        tips: "Lower the weight with a slow 2-second eccentric phase for optimal muscle tone.",
+        commonMistake: "Swinging hips to hoist the dumbbells up."
+      },
+      {
+        id: "tue-4",
+        name: "Hammer Curl",
+        targetMuscle: "Brachialis & Forearms",
+        sets: 3,
+        reps: "12 reps",
+        rest: "45-60 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=600&q=80",
+        instructions: "Hold dumbbells with palms facing each other (neutral grip). Curl weights up keeping palms facing inward throughout the motion.",
+        tips: "Strengthens wrist stability and gives arms a toned, balanced shape.",
+        commonMistake: "Allowing elbows to drift forward or sway backward."
+      }
+    ]
+  },
+  wednesday: {
+    dayName: "Wednesday",
+    title: "Recovery Day",
+    tagline: "Active Recharge & Gentle Mobility",
+    category: "Recovery",
+    color: "green",
+    estTime: "25-30 mins",
+    icon: "HeartPulse",
+    coverImage: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
+    description: "Recharge your muscles and central nervous system with gentle movement and breath.",
+    exercises: [
+      {
+        id: "wed-1",
+        name: "Gentle Walking",
+        targetMuscle: "Cardiovascular, Lower body active recovery",
+        sets: 1,
+        reps: "20-30 mins",
+        rest: "Self-paced",
+        difficulty: "Very Easy",
+        image: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=600&q=80",
+        instructions: "Enjoy an easy, relaxed outdoor stroll or comfortable treadmill pace. Listen to soothing music or an inspiring podcast. Breathe deeply.",
+        tips: "Aim for a conversational pace where you can comfortably speak full sentences.",
+        commonMistake: "Pushing into a brisk power walk; today is purely for circulation and restorative recovery."
+      },
+      {
+        id: "wed-2",
+        name: "Full-Body Gentle Stretching",
+        targetMuscle: "Hamstrings, Quads, Chest, Shoulders",
+        sets: 3,
+        reps: "30 sec holds",
+        rest: "Relaxing breaths",
+        difficulty: "Easy",
+        image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+        instructions: "Cycle through seated forward bend, child's pose, gentle cobra, and shoulder cross-body stretch. Hold each gently without bouncing.",
+        tips: "Inhale to lengthen the spine, exhale to sink slightly deeper into relaxation.",
+        commonMistake: "Holding your breath or pulling past comfortable gentle tension."
+      },
+      {
+        id: "wed-3",
+        name: "Mobility Exercises (Hips & Spine)",
+        targetMuscle: "Hip flexors, Thoracic spine",
+        sets: 3,
+        reps: "8-10 slow reps",
+        rest: "None",
+        difficulty: "Easy",
+        image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80",
+        instructions: "Perform Cat-Cow flow, 90/90 hip transitions, and gentle thread-the-needle stretches. Move fluidly with gentle awareness.",
+        tips: "Focus on opening stiff joints after the first two workout days.",
+        commonMistake: "Rushing through movements without exploring joint range of motion."
+      }
+    ]
+  },
+  thursday: {
+    dayName: "Thursday",
+    title: "Shoulders",
+    tagline: "Deltoid Definition & Postural Balance",
+    category: "Strength",
+    color: "blue",
+    estTime: "35-40 mins",
+    icon: "Shield",
+    coverImage: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80",
+    description: "Tone all three heads of the shoulder for graceful, defined upper body silhouette.",
+    exercises: [
+      {
+        id: "thu-1",
+        name: "Dumbbell Shoulder Press",
+        targetMuscle: "Anterior & Lateral Deltoids",
+        sets: 3,
+        reps: "12 reps",
+        rest: "60-90 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=600&q=80",
+        instructions: "Sit or stand with dumbbells at ear level, elbows at 90 degrees. Press the weights upward overhead until arms are nearly extended. Lower slowly.",
+        tips: "Keep core tight to protect your lower back.",
+        commonMistake: "Arching lower back when weights get heavy; use lighter weights if form breaks."
+      },
+      {
+        id: "thu-2",
+        name: "Lateral Raises",
+        targetMuscle: "Lateral (Side) Deltoids",
+        sets: 3,
+        reps: "12 reps",
+        rest: "60 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80",
+        instructions: "Stand with light dumbbells at your sides. With a micro-bend in elbows, raise arms out to sides until parallel with floor. Lower with control.",
+        tips: "Pour the pitcher: tilt thumbs slightly downward at top to better target side delts.",
+        commonMistake: "Using momentum or shrugging shoulders up to ears."
+      },
+      {
+        id: "thu-3",
+        name: "Front Raises",
+        targetMuscle: "Anterior (Front) Deltoids",
+        sets: 3,
+        reps: "12 reps",
+        rest: "45-60 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80",
+        instructions: "Hold light dumbbells in front of thighs, palms down. Raise one or both dumbbells straight in front to shoulder level. Lower gently.",
+        tips: "Maintain an upright posture without leaning back.",
+        commonMistake: "Rocking the torso back and forth."
+      },
+      {
+        id: "thu-4",
+        name: "Face Pulls",
+        targetMuscle: "Rear Deltoids, Rhomboids, Rotator Cuff",
+        sets: 3,
+        reps: "12 reps",
+        rest: "60 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=600&q=80",
+        instructions: "Set cable with rope attachment at eye height. Step back, pull rope directly towards your nose/forehead, flaring elbows wide and rotating wrists back.",
+        tips: "A premier exercise for healthy posture and eliminating rounded desk shoulders.",
+        commonMistake: "Pulling towards the chest or rounding shoulders forward."
+      }
+    ]
+  },
+  friday: {
+    dayName: "Friday",
+    title: "Legs & Glutes",
+    tagline: "Lower Body Power & Curves",
+    category: "Strength",
+    color: "pink",
+    estTime: "45-50 mins",
+    icon: "Flame",
+    coverImage: "https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?auto=format&fit=crop&w=800&q=80",
+    description: "Strengthen glutes, quadriceps, and hamstrings for daily energy and functional power.",
+    exercises: [
+      {
+        id: "fri-1",
+        name: "Squats (Goblet or Bodyweight)",
+        targetMuscle: "Quadriceps, Glutes, Hamstrings",
+        sets: 3,
+        reps: "12 reps",
+        rest: "90 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=600&q=80",
+        instructions: "Stand with feet shoulder-width apart, toes turned slightly out. Hold dumbbell or hands at chest. Push hips back and bend knees until thighs are parallel to ground. Drive through heels to return.",
+        tips: "Keep chest proud and eyes straight ahead throughout the movement.",
+        commonMistake: "Allowing knees to cave inward or heels to lift off floor."
+      },
+      {
+        id: "fri-2",
+        name: "Walking or Stationary Lunges",
+        targetMuscle: "Glutes, Quads, Balance & Stability",
+        sets: 3,
+        reps: "10 reps / leg",
+        rest: "60-90 sec",
+        difficulty: "Beginner / Intermediate",
+        image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+        instructions: "Step forward with right foot, lowering hips until both knees form 90-degree angles. Front knee should stay aligned over ankle. Push back to starting position and switch.",
+        tips: "Keep torso upright and engage core to prevent wobbling.",
+        commonMistake: "Letting front knee track far past the toes or banging back knee onto ground."
+      },
+      {
+        id: "fri-3",
+        name: "Leg Press",
+        targetMuscle: "Quadriceps & Gluteus Maximus",
+        sets: 3,
+        reps: "12 reps",
+        rest: "90 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80",
+        instructions: "Place feet shoulder-width on the sled. Release safety catches. Slowly bend knees to lower the sled toward your chest to 90 degrees. Press smoothly back up.",
+        tips: "Never lock knees completely out at the top of the extension.",
+        commonMistake: "Lifting lower back or glutes off the seat pad at bottom."
+      },
+      {
+        id: "fri-4",
+        name: "Calf Raises (Standing or Machine)",
+        targetMuscle: "Gastrocnemius & Soleus",
+        sets: 3,
+        reps: "15 reps",
+        rest: "45 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=600&q=80",
+        instructions: "Stand on edge of step or floor. Rise up onto balls of feet as high as possible, hold for 1 count, then lower down until you feel a gentle calf stretch.",
+        tips: "Perform with deliberate tempo: 2 seconds up, 1 second pause, 2 seconds down.",
+        commonMistake: "Bouncing quickly without controlling the range of motion."
+      }
+    ]
+  },
+  saturday: {
+    dayName: "Saturday",
+    title: "Gentle Core & Mobility",
+    tagline: "Core Stability, Spine Care & Breathing",
+    category: "Core & Mobility",
+    color: "yellow",
+    estTime: "25-30 mins",
+    icon: "Sun",
+    coverImage: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
+    description: "Deep core activation, pelvic stability, and restorative stretches to end the workout week feeling centered.",
+    exercises: [
+      {
+        id: "sat-1",
+        name: "Bird Dog",
+        targetMuscle: "Transverse Abdominis, Glutes, Erector Spinae",
+        sets: 3,
+        reps: "10 reps / side",
+        rest: "45 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+        instructions: "Start on all fours with hands under shoulders, knees under hips. Extend right arm forward and left leg straight back simultaneously until parallel to floor. Hold 2 seconds, return smoothly.",
+        tips: "Imagine balancing a teacup on your lower back without spilling.",
+        commonMistake: "Rotating hips to side or arching lower spine."
+      },
+      {
+        id: "sat-2",
+        name: "Dead Bug",
+        targetMuscle: "Deep Core Stabilizers, Pelvic Floor",
+        sets: 3,
+        reps: "10 reps / side",
+        rest: "45 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80",
+        instructions: "Lie on back with arms pointing to ceiling and knees at 90 degrees. Press lower back flush into mat. Slowly extend opposite arm and leg toward floor while maintaining lower back contact.",
+        tips: "If lower back arches off floor, don't lower leg all the way down.",
+        commonMistake: "Allowing lower back to peel off the mat."
+      },
+      {
+        id: "sat-3",
+        name: "Plank",
+        targetMuscle: "Entire Core & Shoulder girdle",
+        sets: 3,
+        reps: "20 seconds",
+        rest: "45-60 sec",
+        difficulty: "Beginner",
+        image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80",
+        instructions: "Rest on forearms and balls of feet (or knees for beginner modification). Keep body in a straight line from crown of head to heels. Squeeze glutes and draw belly button inward.",
+        tips: "Breathe steadily; never hold your breath during isometric holds.",
+        commonMistake: "Sagging hips or piking buttocks too high in air."
+      },
+      {
+        id: "sat-4",
+        name: "Gentle Stretching & Breathing",
+        targetMuscle: "Spinal decompress, Relaxation",
+        sets: 3,
+        reps: "30 sec holds",
+        rest: "Restorative breaths",
+        difficulty: "Very Easy",
+        image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80",
+        instructions: "End with Child's Pose, Butterfly Stretch, and gentle Spinal Twists on each side. Focus on slow, diaphragmatic breathing.",
+        tips: "Allow your nervous system to fully transition into calm parasympathetic mode.",
+        commonMistake: "Rushing through relaxation."
+      }
+    ]
+  },
+  sunday: {
+    dayName: "Sunday",
+    title: "Rest Day",
+    tagline: "Total Relaxation, Nature & Recharging",
+    category: "Rest",
+    color: "lavender",
+    estTime: "20-40 mins (Optional)",
+    icon: "Coffee",
+    coverImage: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=800&q=80",
+    description: "Honor your body's need for deep rest. Muscles grow and rebuild when you rest and nourish yourself.",
+    exercises: [
+      {
+        id: "sun-1",
+        name: "Optional Outdoor Morning Walk",
+        targetMuscle: "Fresh air, Vitamin D & Light circulation",
+        sets: 1,
+        reps: "20–40 mins",
+        rest: "Relaxed",
+        difficulty: "Easy",
+        image: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=600&q=80",
+        instructions: "Take an easy leisurely walk outdoors in morning daylight. Soak in the fresh air, hear the birds, and enjoy natural morning light to calibrate your circadian rhythm.",
+        tips: "Purely optional; if you prefer sleeping in or reading on the couch, that is wonderful too!",
+        commonMistake: "Feeling guilty for taking a complete rest day."
+      },
+      {
+        id: "sun-2",
+        name: "Relaxation & Self-Care Time",
+        targetMuscle: "Mental wellness & Nervous system recovery",
+        sets: 1,
+        reps: "All day",
+        rest: "Full rest",
+        difficulty: "Zero Effort",
+        image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+        instructions: "Hydrate, enjoy a warm bath or shower, read a favorite book, spend time with loved ones, or prep nourishing meals for the week ahead.",
+        tips: "Rest is when the magic happens: your muscles rebuild stronger and your hormones balance.",
+        commonMistake: "Skipping rest or feeling like rest is wasted time."
+      }
+    ]
+  }
+};
+
+export const DAYS_ORDER = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];

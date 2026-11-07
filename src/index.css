@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-pink: #F4A7C3;
+    --color-lavender: #C8B6F0;
+    --color-blue: #BAE6FD;
+    --color-yellow: #FEF08A;
+    --color-green: #B8E6D0;
+    --color-bg: #FFF7FA;
+    --color-charcoal: #292536;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-charcoal);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .font-script {
+    font-family: 'Caveat', 'Dancing Script', cursive, sans-serif;
+  }
+
+  .font-brand {
+    font-family: 'Dancing Script', 'Caveat', cursive, sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Glassmorphism effects */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 10px 30px -5px rgba(244, 167, 195, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  }
+
+  .glass-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px -6px rgba(200, 182, 240, 0.22);
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+  }
+
+  .gradient-pastel-banner {
+    background: linear-gradient(135deg, #FFE4EE 0%, #EFEAFF 50%, #E0F2FE 100%);
+  }
+
+  .gradient-pink-lavender {
+    background: linear-gradient(135deg, #F4A7C3 0%, #C8B6F0 100%);
+  }
+
+  .gradient-mint-blue {
+    background: linear-gradient(135deg, #B8E6D0 0%, #BAE6FD 100%);
+  }
+
+  .gradient-yellow-pink {
+    background: linear-gradient(135deg, #FEF08A 0%, #F4A7C3 100%);
+  }
+
+  .gradient-soft-glow {
+    background: radial-gradient(circle at 10% 20%, rgba(244, 167, 195, 0.2) 0%, rgba(200, 182, 240, 0.15) 45%, rgba(184, 230, 208, 0.15) 90%);
+  }
+}
+
+/* Custom delicate scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF7FA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #F4A7C3;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E87A9F;
+}
+
+/* Smooth transitions */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
