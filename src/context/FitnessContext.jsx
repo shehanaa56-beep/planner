@@ -111,20 +111,39 @@ export const FitnessProvider = ({ children }) => {
   const [weightHistory, setWeightHistory] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.WEIGHT_HISTORY);
-      return saved ? JSON.parse(saved) : INITIAL_WEIGHT_HISTORY;
-    } catch {
-      return INITIAL_WEIGHT_HISTORY;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Clean out old dummy data from October (e.g. 2026-10-15, Wk 2, Wk 3, etc.)
+        const hasDummy = parsed.some(p => p.date && p.date.startsWith('2026-10'));
+        if (!hasDummy && Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {
+      console.error(e);
     }
+    return INITIAL_WEIGHT_HISTORY;
   });
 
   // 7. Menstrual Health Data
   const [periodData, setPeriodData] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.PERIOD_DATA);
-      return saved ? JSON.parse(saved) : INITIAL_PERIOD_DATA;
-    } catch {
-      return INITIAL_PERIOD_DATA;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Clean out old dummy data from August/September/October (p-1, p-2, p-3 or dates < 2026-11-01)
+        const filteredHistory = (parsed.history || []).filter(h =>
+          h.startDate && h.startDate >= '2026-11-01' && !['p-1', 'p-2', 'p-3'].includes(h.id)
+        );
+        return {
+          ...parsed,
+          lastPeriodStart: parsed.lastPeriodStart && parsed.lastPeriodStart >= '2026-11-01' ? parsed.lastPeriodStart : INITIAL_PERIOD_DATA.lastPeriodStart,
+          lastPeriodEnd: parsed.lastPeriodEnd && parsed.lastPeriodEnd >= '2026-11-01' ? parsed.lastPeriodEnd : INITIAL_PERIOD_DATA.lastPeriodEnd,
+          history: filteredHistory.length > 0 ? filteredHistory : INITIAL_PERIOD_DATA.history
+        };
+      }
+    } catch (e) {
+      console.error(e);
     }
+    return INITIAL_PERIOD_DATA;
   });
 
   // 8. Weekly Matrix Completion
@@ -371,6 +390,13 @@ export const FitnessProvider = ({ children }) => {
     triggerCelebration();
   };
 
+  const deletePeriodLog = (id) => {
+    setPeriodData(prev => ({
+      ...prev,
+      history: prev.history.filter(h => h.id !== id)
+    }));
+  };
+
   // Todo Actions
   const addTodo = (text) => {
     setTodoList(prev => [
@@ -447,6 +473,7 @@ export const FitnessProvider = ({ children }) => {
         addMeasurementLog,
         periodData,
         addPeriodLog,
+        deletePeriodLog,
         weeklyMatrix,
         todoList,
         addTodo,

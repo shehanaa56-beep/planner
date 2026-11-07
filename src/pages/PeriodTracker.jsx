@@ -9,12 +9,13 @@ import {
   Droplet,
   Activity,
   ShieldCheck,
-  Check
+  Check,
+  Trash2
 } from 'lucide-react';
 import { useFitness } from '../context/FitnessContext';
 
 export const PeriodTracker = () => {
-  const { periodData, addPeriodLog } = useFitness();
+  const { periodData, addPeriodLog, deletePeriodLog } = useFitness();
 
   const [showLogModal, setShowLogModal] = useState(false);
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
@@ -190,53 +191,78 @@ export const PeriodTracker = () => {
 
       {/* Cycle History Logs */}
       <div className="glass-card rounded-3xl p-5 sm:p-6 border border-white shadow-soft">
-        <h3 className="font-display font-bold text-base sm:text-lg text-charcoal-900 mb-4">
-          Logged Cycles History
-        </h3>
-
-        <div className="space-y-3">
-          {periodData.history.map((record) => (
-            <div
-              key={record.id}
-              className="p-4 rounded-2xl bg-white/80 border border-gray-100 hover:border-pastel-pink/40 transition-all shadow-2xs"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-pastel-pink-deep" />
-                  <span className="text-sm font-bold text-charcoal-900">
-                    {record.startDate} → {record.endDate}
-                  </span>
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-pastel-pink-light text-pastel-pink-deep font-semibold">
-                    {record.duration} days flow
-                  </span>
-                </div>
-
-                <div className="text-xs text-charcoal-500 font-medium">
-                  Flow: <strong className="text-charcoal-800">{record.flow}</strong> • Cycle: <strong className="text-charcoal-800">{record.cycleLength} days</strong>
-                </div>
-              </div>
-
-              {record.symptoms && record.symptoms.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1.5 my-2">
-                  {record.symptoms.map((sym, sIdx) => (
-                    <span
-                      key={sIdx}
-                      className="text-[11px] px-2.5 py-0.5 rounded-full bg-pastel-lavender-light text-pastel-lavender-deep font-medium border border-pastel-lavender/30"
-                    >
-                      {sym}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {record.notes && (
-                <p className="text-xs text-charcoal-500 italic mt-1 bg-gray-50/70 p-2.5 rounded-xl">
-                  "{record.notes}"
-                </p>
-              )}
-            </div>
-          ))}
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-display font-bold text-base sm:text-lg text-charcoal-900">
+            Logged Cycles History
+          </h3>
+          <span className="text-xs text-charcoal-500 font-semibold">
+            From Nov onwards
+          </span>
         </div>
+
+        {(!periodData.history || periodData.history.length === 0) ? (
+          <div className="text-center py-8 px-4 rounded-2xl bg-white/60 border border-dashed border-pastel-pink/40">
+            <HeartHandshake className="w-8 h-8 text-pastel-pink mx-auto mb-2 opacity-60" />
+            <p className="text-xs font-bold text-charcoal-700">No cycle logs yet</p>
+            <p className="text-[11px] text-charcoal-500 mt-0.5">
+              Tap &quot;Log Period Cycle&quot; above to add your cycle dates, symptoms, and self-care notes for November.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {periodData.history.map((record) => (
+              <div
+                key={record.id}
+                className="p-4 rounded-2xl bg-white/80 border border-gray-100 hover:border-pastel-pink/40 transition-all shadow-2xs group"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-pastel-pink-deep" />
+                    <span className="text-sm font-bold text-charcoal-900">
+                      {record.startDate} → {record.endDate}
+                    </span>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-pastel-pink-light text-pastel-pink-deep font-semibold">
+                      {record.duration} days flow
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-xs text-charcoal-500 font-medium self-end sm:self-auto">
+                    <span>Flow: <strong className="text-charcoal-800">{record.flow}</strong> • Cycle: <strong className="text-charcoal-800">{record.cycleLength} days</strong></span>
+                    {deletePeriodLog && (
+                      <button
+                        type="button"
+                        onClick={() => deletePeriodLog(record.id)}
+                        className="p-1 rounded-lg text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors ml-1"
+                        title="Delete log"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {record.symptoms && record.symptoms.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5 my-2">
+                    {record.symptoms.map((sym, sIdx) => (
+                      <span
+                        key={sIdx}
+                        className="text-[11px] px-2.5 py-0.5 rounded-full bg-pastel-lavender-light text-pastel-lavender-deep font-medium border border-pastel-lavender/30"
+                      >
+                        {sym}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {record.notes && (
+                  <p className="text-xs text-charcoal-500 italic mt-1 bg-gray-50/70 p-2.5 rounded-xl">
+                    &quot;{record.notes}&quot;
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Log Period Modal */}

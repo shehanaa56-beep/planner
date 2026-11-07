@@ -10,9 +10,9 @@ export const FitLifeHeader = () => {
   const [showNotifications, setShowNotifications] = useState(false);
 
   const notifications = [
-    { id: 1, title: "Workout Reminder", desc: "Chest & Triceps scheduled today!", time: "10m ago" },
-    { id: 2, title: "Hydration Goal", desc: "You've reached 1,800ml / 2,500ml", time: "1h ago" },
-    { id: 3, title: "Great Progress! 💕", desc: "Weight steady at 56.4 kg. Keep shining!", time: "Yesterday" },
+    { id: 1, title: "Welcome to FitLife! ✨", desc: "Week 1 started — let's build healthy habits!", time: "Now" },
+    { id: 2, title: "Hydration Reminder 💧", desc: "Drink water regularly through the day", time: "1h ago" },
+    { id: 3, title: "Today's Plan 🌸", desc: "Check your workout and meals when ready", time: "Today" },
   ];
 
   return (
