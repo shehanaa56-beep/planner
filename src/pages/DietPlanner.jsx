@@ -27,15 +27,7 @@ export const DietPlanner = () => {
     } catch (e) {
       console.error(e);
     }
-    return {
-      monday: { "early-morning": true, "breakfast": true, "mid-morning": true },
-      tuesday: { "early-morning": true, "breakfast": true },
-      wednesday: {},
-      thursday: {},
-      friday: {},
-      saturday: {},
-      sunday: {}
-    };
+    return {};
   });
 
   // Custom food names if user typed what they ate

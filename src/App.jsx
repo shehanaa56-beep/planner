@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { FitnessProvider } from './context/FitnessContext';
 import { AppHeader } from './components/layout/AppHeader';
 import { FitLifeBottomNav } from './components/layout/FitLifeBottomNav';
+import PWAInstallPrompt from './components/common/PWAInstallPrompt';
 
 // Pages
 import { Dashboard } from './pages/Dashboard';
@@ -13,6 +14,8 @@ import { TwelveWeekJourney } from './pages/TwelveWeekJourney';
 import { ProgressTracker } from './pages/ProgressTracker';
 import { PeriodTracker } from './pages/PeriodTracker';
 import { Settings } from './pages/Settings';
+import { TodoList } from './pages/TodoList';
+import { Notes } from './pages/Notes';
 
 export const App = () => {
   return (
@@ -35,6 +38,8 @@ export const App = () => {
                 <Route path="/progress" element={<ProgressTracker />} />
                 <Route path="/period" element={<PeriodTracker />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/todo" element={<TodoList />} />
+                <Route path="/notes" element={<Notes />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>
@@ -43,6 +48,9 @@ export const App = () => {
             <div className="sticky bottom-0 z-40">
               <FitLifeBottomNav />
             </div>
+
+            {/* PWA Install Prompt */}
+            <PWAInstallPrompt />
           </div>
         </div>
       </FitnessProvider>

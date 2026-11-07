@@ -22,7 +22,9 @@ const STORAGE_KEYS = {
   WEIGHT_HISTORY: 'fitlife_weight_history',
   PERIOD_DATA: 'fitlife_period_data',
   CURRENT_DAY: 'fitlife_selected_day',
-  WEEKLY_COMPLETION: 'fitlife_weekly_completion_matrix'
+  WEEKLY_COMPLETION: 'fitlife_weekly_completion_matrix',
+  TODO_LIST: 'fitlife_todo_list',
+  NOTES: 'fitlife_notes'
 };
 
 export const FitnessProvider = ({ children }) => {
@@ -60,16 +62,7 @@ export const FitnessProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-    // Default initial mock progress (some completed on Monday and Tuesday)
-    return {
-      monday: { "mon-1": true, "mon-2": true, "mon-3": true, "mon-4": true },
-      tuesday: { "tue-1": true, "tue-2": true, "tue-3": true, "tue-4": false },
-      wednesday: { "wed-1": true, "wed-2": true, "wed-3": true },
-      thursday: { "thu-1": false, "thu-2": false, "thu-3": false, "thu-4": false },
-      friday: { "fri-1": false, "fri-2": false, "fri-3": false, "fri-4": false },
-      saturday: { "sat-1": false, "sat-2": false, "sat-3": false, "sat-4": false },
-      sunday: { "sun-1": false, "sun-2": false }
-    };
+    return {};
   });
 
   // 3. Meal Completion: Object { [mealId]: boolean }
@@ -80,16 +73,7 @@ export const FitnessProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-    return {
-      "early-morning": true,
-      "breakfast": true,
-      "mid-morning": true,
-      "lunch": false,
-      "evening-snack": false,
-      "pre-workout": false,
-      "dinner": false,
-      "before-bed": false
-    };
+    return {};
   });
 
   // Meal selections: Object { [mealId]: optionId }
@@ -100,16 +84,14 @@ export const FitnessProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-    return {
-      "breakfast": "opt-puttu"
-    };
+    return {};
   });
 
   // 4. Water Intake (in ml)
   const [waterIntakeMl, setWaterIntakeMl] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.WATER_INTAKE);
-      return saved ? Number(saved) : 1750;
+      return saved ? Number(saved) : 0;
     } catch {
       return 1750;
     }
@@ -155,6 +137,26 @@ export const FitnessProvider = ({ children }) => {
     }
   });
 
+  // 9. Todo List
+  const [todoList, setTodoList] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.TODO_LIST);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // 10. Notes
+  const [notes, setNotes] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.NOTES);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
   // Persistent storage synchronizer
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(profile));
@@ -195,6 +197,14 @@ export const FitnessProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.WEEKLY_COMPLETION, JSON.stringify(weeklyMatrix));
   }, [weeklyMatrix]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.TODO_LIST, JSON.stringify(todoList));
+  }, [todoList]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
+  }, [notes]);
 
   // Confetti celebration helper
   const triggerCelebration = () => {
@@ -361,6 +371,38 @@ export const FitnessProvider = ({ children }) => {
     triggerCelebration();
   };
 
+  // Todo Actions
+  const addTodo = (text) => {
+    setTodoList(prev => [
+      ...prev,
+      { id: Date.now().toString(), text: text.trim(), done: false, createdAt: new Date().toISOString() }
+    ]);
+  };
+
+  const toggleTodo = (id) => {
+    setTodoList(prev => prev.map(t => t.id === id ? { ...t, done: !t.done } : t));
+  };
+
+  const deleteTodo = (id) => {
+    setTodoList(prev => prev.filter(t => t.id !== id));
+  };
+
+  // Notes Actions
+  const addNote = (title, content) => {
+    setNotes(prev => [
+      { id: Date.now().toString(), title: title.trim(), content: content.trim(), createdAt: new Date().toISOString() },
+      ...prev
+    ]);
+  };
+
+  const updateNote = (id, title, content) => {
+    setNotes(prev => prev.map(n => n.id === id ? { ...n, title: title.trim(), content: content.trim() } : n));
+  };
+
+  const deleteNote = (id) => {
+    setNotes(prev => prev.filter(n => n.id !== id));
+  };
+
   // Reset to Factory Default
   const resetAllData = () => {
     localStorage.clear();
@@ -368,12 +410,14 @@ export const FitnessProvider = ({ children }) => {
     setSelectedDay(getTodayDayKey());
     setWorkoutCompletion({});
     setMealCompletion({});
-    setMealSelections({ breakfast: "opt-puttu" });
+    setMealSelections({});
     setWaterIntakeMl(0);
     setDailyHabits(DEFAULT_DAILY_HABITS.map(h => ({ ...h, completed: false })));
     setWeightHistory(INITIAL_WEIGHT_HISTORY);
     setPeriodData(INITIAL_PERIOD_DATA);
     setWeeklyMatrix(INITIAL_WEEKLY_COMPLETION);
+    setTodoList([]);
+    setNotes([]);
   };
 
   return (
@@ -404,6 +448,14 @@ export const FitnessProvider = ({ children }) => {
         periodData,
         addPeriodLog,
         weeklyMatrix,
+        todoList,
+        addTodo,
+        toggleTodo,
+        deleteTodo,
+        notes,
+        addNote,
+        updateNote,
+        deleteNote,
         resetAllData,
         triggerCelebration
       }}

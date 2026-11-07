@@ -11,7 +11,8 @@ import {
   HeartHandshake,
   BookOpen,
   Settings,
-  Sparkles
+  CheckSquare,
+  FileText
 } from 'lucide-react';
 
 export const FitLifeBottomNav = () => {
@@ -26,10 +27,12 @@ export const FitLifeBottomNav = () => {
   ];
 
   const moreItems = [
-    { to: '/library', label: 'Exercise Library', icon: BookOpen, desc: 'Form guides & muscle targets' },
-    { to: '/journey', label: '12-Week Journey', icon: CalendarDays, desc: '3-phase progressive roadmap' },
-    { to: '/period', label: 'Period Tracker', icon: HeartHandshake, desc: 'Cycle phase workout tips' },
-    { to: '/settings', label: 'Settings', icon: Settings, desc: 'Profile, weight goals, diet' },
+    { to: '/library', label: 'Exercise Library', icon: BookOpen, desc: 'Form guides & muscle targets', color: 'bg-purple-50 text-purple-600' },
+    { to: '/journey', label: '12-Week Journey', icon: CalendarDays, desc: '3-phase progressive roadmap', color: 'bg-blue-50 text-blue-600' },
+    { to: '/period', label: 'Period Tracker', icon: HeartHandshake, desc: 'Cycle phase workout tips', color: 'bg-pink-50 text-pink-600' },
+    { to: '/todo', label: 'To-Do List', icon: CheckSquare, desc: 'Add & track your tasks', color: 'bg-violet-50 text-violet-600' },
+    { to: '/notes', label: 'Notes', icon: FileText, desc: 'Save emails & reminders', color: 'bg-amber-50 text-amber-600' },
+    { to: '/settings', label: 'Settings', icon: Settings, desc: 'Profile, weight goals, diet', color: 'bg-gray-100 text-gray-600' },
   ];
 
   return (
@@ -66,7 +69,7 @@ export const FitLifeBottomNav = () => {
                     }}
                     className="flex flex-col p-3 rounded-2xl border border-gray-100 hover:border-pink-200 hover:bg-pink-50/30 text-left transition-all"
                   >
-                    <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-2">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center mb-2 ${item.color || 'bg-purple-50 text-purple-600'}`}>
                       <Icon className="w-4 h-4" />
                     </div>
                     <span className="text-xs font-bold text-[#2D2335]">{item.label}</span>

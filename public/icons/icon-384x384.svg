@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="384" viewBox="0 0 384 384">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6BA8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4D8D;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Background rounded rect -->
+  <rect width="384" height="384" rx="84" fill="url(#bg)"/>
+  <!-- White heart -->
+  <text x="192" y="222.72" 
+        font-family="serif" font-size="161" 
+        fill="white" text-anchor="middle" dominant-baseline="middle">♥</text>
+  <!-- Green leaf accent -->
+  <ellipse cx="265.7" cy="265.7" 
+           rx="37.52" ry="18.76" 
+           fill="url(#leaf)" transform="rotate(-45 265.7 265.7)"/>
+  <!-- F letter -->
+  <text x="188.16" y="220.8" 
+        font-family="Arial, sans-serif" font-weight="800" font-size="146" 
+        fill="white" fill-opacity="0.18" text-anchor="middle" dominant-baseline="middle">F</text>
+</svg>
