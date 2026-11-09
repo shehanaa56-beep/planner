@@ -69,11 +69,11 @@ export const FitLifeHeader = () => {
           {/* Profile Avatar */}
           <button
             onClick={() => navigate('/settings')}
-            className="w-9 h-9 rounded-full ring-2 ring-pink-100 shadow-2xs overflow-hidden active:scale-95 transition-transform"
+            className="w-9 h-9 rounded-full ring-2 ring-pink-100 shadow-2xs overflow-hidden active:scale-95 transition-transform bg-white"
             title="Settings & Profile"
           >
             <img
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+              src={profile.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"}
               alt={profile.name || "User"}
               className="w-full h-full object-cover"
             />

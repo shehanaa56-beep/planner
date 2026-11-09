@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Settings as SettingsIcon,
   User,
@@ -13,12 +13,31 @@ import {
   AlertTriangle,
   Heart,
   ShieldAlert,
-  Sparkles
+  Sparkles,
+  Camera,
+  Trash2,
+  FileDown,
+  Download
 } from 'lucide-react';
 import { useFitness } from '../context/FitnessContext';
+import { generatePdfReport } from '../utils/generatePdfReport';
 
 export const Settings = () => {
-  const { profile, updateProfile, resetAllData, triggerCelebration } = useFitness();
+  const {
+    profile,
+    updateProfile,
+    resetAllData,
+    triggerCelebration,
+    weightHistory,
+    wellnessLogs,
+    workoutCompletion,
+    dietDayTicks,
+    periodData,
+    dailyHabits
+  } = useFitness();
+
+  const fileInputRef = useRef(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   const [formData, setFormData] = useState({
     name: profile.name || 'Ananya',
@@ -26,10 +45,11 @@ export const Settings = () => {
     height: profile.height || 160,
     goalWeight: profile.goalWeight || 52,
     planDurationWeeks: profile.planDurationWeeks || 12,
-    currentWeek: profile.currentWeek || 3,
+    currentWeek: profile.currentWeek || 1,
     dietaryPreference: profile.dietaryPreference || 'all',
     targetWaterMl: profile.targetWaterMl || 2500,
     targetSleepHours: profile.targetSleepHours || 8,
+    avatar: profile.avatar || null,
   });
 
   const [savedSuccess, setSavedSuccess] = useState(false);
@@ -41,6 +61,74 @@ export const Settings = () => {
       ...prev,
       [name]: name === 'name' || name === 'dietaryPreference' ? value : Number(value)
     }));
+  };
+
+  // Convert uploaded image to compressed Base64
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        // Draw onto a canvas to resize to 240x240 max
+        const canvas = document.createElement('canvas');
+        const MAX_SIZE = 240;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_SIZE) {
+            height = Math.round((height * MAX_SIZE) / width);
+            width = MAX_SIZE;
+          }
+        } else {
+          if (height > MAX_SIZE) {
+            width = Math.round((width * MAX_SIZE) / height);
+            height = MAX_SIZE;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const base64Data = canvas.toDataURL('image/jpeg', 0.85);
+        setFormData(prev => ({ ...prev, avatar: base64Data }));
+        updateProfile({ avatar: base64Data });
+        triggerCelebration();
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveAvatar = () => {
+    setFormData(prev => ({ ...prev, avatar: null }));
+    updateProfile({ avatar: null });
+  };
+
+  const handleDownloadPdf = () => {
+    try {
+      setDownloadingPdf(true);
+      generatePdfReport({
+        profile: { ...profile, ...formData },
+        weightHistory,
+        wellnessLogs,
+        workoutCompletion,
+        dietDayTicks,
+        periodData,
+        dailyHabits
+      });
+      triggerCelebration();
+    } catch (err) {
+      console.error('Failed to generate PDF', err);
+      alert('Could not generate PDF report. Please try again.');
+    } finally {
+      setTimeout(() => setDownloadingPdf(false), 1500);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -60,12 +148,15 @@ export const Settings = () => {
       height: 160,
       goalWeight: 52,
       planDurationWeeks: 12,
-      currentWeek: 3,
+      currentWeek: 1,
       dietaryPreference: 'all',
       targetWaterMl: 2500,
       targetSleepHours: 8,
+      avatar: null,
     });
   };
+
+  const defaultAvatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80";
 
   return (
     <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-300">
@@ -80,7 +171,7 @@ export const Settings = () => {
               Settings & Profile
             </h1>
             <p className="text-sm text-charcoal-600 mt-0.5 leading-relaxed">
-              Customize your body metrics, goals, water targets, and plan configuration.
+              Upload your photo, configure targets, and download your complete report.
             </p>
           </div>
         </div>
@@ -93,11 +184,95 @@ export const Settings = () => {
         </div>
       )}
 
+      {/* PDF Export Action Card */}
+      <div className="bg-gradient-to-r from-[#FFF0F6] via-[#FAF5FF] to-[#E8F8EE] rounded-3xl p-5 sm:p-6 border border-pink-200/80 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#FF4D8D]">
+            <Sparkles className="w-4 h-4" />
+            <span>Official Progress Report</span>
+          </div>
+          <h2 className="font-extrabold text-base sm:text-lg text-[#2D2335]">
+            Download Health &amp; Progress Report (PDF)
+          </h2>
+          <p className="text-xs text-charcoal-600 max-w-md leading-relaxed">
+            Includes your photo, starting vs current weight, 12-week weight progression, workouts completed, diet followed, and face massage history with dates.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleDownloadPdf}
+          disabled={downloadingPdf}
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-[#FF4D8D] to-[#F43F5E] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg active:scale-95 transition-all shrink-0 disabled:opacity-75"
+        >
+          <FileDown className="w-4 h-4 stroke-[2.5]" />
+          <span>{downloadingPdf ? 'Generating PDF...' : 'Download PDF Report'}</span>
+        </button>
+      </div>
+
       {/* Main Settings Form */}
       <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white shadow-soft">
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Personal Info */}
+          {/* Profile Photo Upload */}
           <div>
+            <h3 className="font-display font-bold text-base text-charcoal-900 mb-3 flex items-center gap-2">
+              <Camera className="w-4 h-4 text-pastel-pink-deep" />
+              <span>Profile Image (Base64)</span>
+            </h3>
+
+            <div className="flex items-center gap-4 p-3 rounded-2xl bg-gray-50/80 border border-gray-100">
+              {/* Avatar Preview */}
+              <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border-2 border-pink-200 shadow-2xs relative bg-white">
+                <img
+                  src={formData.avatar || defaultAvatar}
+                  alt={formData.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Upload & Remove Buttons */}
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-[#2D2335]">
+                  {formData.avatar ? 'Custom Photo Uploaded ✓' : 'Add Your Photo'}
+                </p>
+                <p className="text-[11px] text-gray-500 mb-2">
+                  Photo is saved as Base64 and included in your report.
+                </p>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-3 py-1.5 rounded-xl bg-charcoal-900 text-white font-bold text-xs hover:bg-black transition-all flex items-center gap-1.5 shadow-2xs"
+                  >
+                    <Camera className="w-3.5 h-3.5" />
+                    <span>Upload Photo</span>
+                  </button>
+
+                  {formData.avatar && (
+                    <button
+                      type="button"
+                      onClick={handleRemoveAvatar}
+                      className="px-2.5 py-1.5 rounded-xl border border-gray-200 text-gray-500 hover:text-red-500 hover:bg-red-50 font-semibold text-xs transition-colors flex items-center gap-1"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Remove</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Personal Info */}
+          <div className="border-t border-gray-100 pt-6">
             <h3 className="font-display font-bold text-base text-charcoal-900 mb-4 flex items-center gap-2">
               <User className="w-4 h-4 text-pastel-pink-deep" />
               <span>Personal Profile</span>
@@ -165,7 +340,7 @@ export const Settings = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">Optional Goal Weight (kg)</label>
+                <label className="block text-xs font-semibold text-charcoal-700 mb-1">Goal Weight (kg)</label>
                 <input
                   type="number"
                   step="0.5"

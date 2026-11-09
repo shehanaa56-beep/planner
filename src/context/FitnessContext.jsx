@@ -25,7 +25,9 @@ const STORAGE_KEYS = {
   WEEKLY_COMPLETION: 'fitlife_weekly_completion_matrix',
   TODO_LIST: 'fitlife_todo_list',
   NOTES: 'fitlife_notes',
-  DIET_DAY_TICKS: 'fitlife_diet_day_ticks'
+  DIET_DAY_TICKS: 'fitlife_diet_day_ticks',
+  WELLNESS_LOGS: 'fitlife_wellness_logs',
+  ACTIVITY_LOG: 'fitlife_activity_log'
 };
 
 export const FitnessProvider = ({ children }) => {
@@ -213,6 +215,26 @@ export const FitnessProvider = ({ children }) => {
     }
   });
 
+  // 11. Wellness & Face Massage Logs
+  const [wellnessLogs, setWellnessLogs] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.WELLNESS_LOGS);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // 12. Date-stamped Activity History
+  const [activityLogs, setActivityLogs] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.ACTIVITY_LOG);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
   // Persistent storage synchronizer
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(profile));
@@ -265,6 +287,14 @@ export const FitnessProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(notes));
   }, [notes]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.WELLNESS_LOGS, JSON.stringify(wellnessLogs));
+  }, [wellnessLogs]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.ACTIVITY_LOG, JSON.stringify(activityLogs));
+  }, [activityLogs]);
 
   // Confetti celebration helper
   const triggerCelebration = () => {
@@ -475,6 +505,87 @@ export const FitnessProvider = ({ children }) => {
     triggerCelebration();
   };
 
+  // Update specific week weight (Week 1 through Week 12)
+  const updateWeekWeight = (weekNum, data) => {
+    const weekLabel = `W${weekNum}`;
+    setWeightHistory(prev => {
+      const idx = prev.findIndex(item => item.week === weekLabel || item.week === `W${weekNum} (Start)`);
+      let updated;
+      const today = new Date().toISOString().split('T')[0];
+      const entryData = {
+        week: weekLabel,
+        weight: Number(data.weight),
+        waist: data.waist ? Number(data.waist) : undefined,
+        notes: data.notes || '',
+        date: data.date || today
+      };
+
+      if (idx >= 0) {
+        updated = [...prev];
+        updated[idx] = { ...updated[idx], ...entryData };
+      } else {
+        updated = [...prev, entryData];
+      }
+
+      // Sort by week number
+      updated.sort((a, b) => {
+        const numA = parseInt(String(a.week).replace(/\D/g, '')) || 0;
+        const numB = parseInt(String(b.week).replace(/\D/g, '')) || 0;
+        return numA - numB;
+      });
+
+      return updated;
+    });
+
+    if (data.weight) {
+      updateProfile({ currentWeight: Number(data.weight) });
+    }
+    triggerCelebration();
+  };
+
+  // Wellness / Face Massage Actions
+  const toggleFaceMassage = (dateStr) => {
+    const targetDate = dateStr || new Date().toISOString().split('T')[0];
+    setWellnessLogs(prev => {
+      const existing = prev.find(item => item.date === targetDate);
+      if (existing) {
+        return prev.filter(item => item.date !== targetDate);
+      } else {
+        triggerCelebration();
+        return [
+          {
+            id: `wm-${Date.now()}`,
+            date: targetDate,
+            faceMassage: true,
+            title: "5-min Face Massage Routine",
+            completedAt: new Date().toISOString()
+          },
+          ...prev
+        ];
+      }
+    });
+  };
+
+  const isFaceMassageDone = (dateStr) => {
+    const targetDate = dateStr || new Date().toISOString().split('T')[0];
+    return wellnessLogs.some(item => item.date === targetDate && item.faceMassage);
+  };
+
+  // Date-stamped Activity History logging
+  const logActivity = (type, details) => {
+    const today = new Date().toISOString().split('T')[0];
+    setActivityLogs(prev => [
+      {
+        id: `act-${Date.now()}`,
+        date: today,
+        timestamp: new Date().toISOString(),
+        type,
+        ...details
+      },
+      ...prev
+    ]);
+  };
+
   // Period Log
   const addPeriodLog = (newRecord) => {
     setPeriodData(prev => ({
@@ -547,6 +658,8 @@ export const FitnessProvider = ({ children }) => {
     setWeeklyMatrix(INITIAL_WEEKLY_COMPLETION);
     setTodoList([]);
     setNotes([]);
+    setWellnessLogs([]);
+    setActivityLogs([]);
   };
 
   return (
@@ -578,6 +691,12 @@ export const FitnessProvider = ({ children }) => {
         getHabitsPercentage,
         weightHistory,
         addMeasurementLog,
+        updateWeekWeight,
+        wellnessLogs,
+        toggleFaceMassage,
+        isFaceMassageDone,
+        activityLogs,
+        logActivity,
         periodData,
         addPeriodLog,
         deletePeriodLog,

@@ -16,6 +16,8 @@ import { PeriodTracker } from './pages/PeriodTracker';
 import { Settings } from './pages/Settings';
 import { TodoList } from './pages/TodoList';
 import { Notes } from './pages/Notes';
+import { WeeklyWeightTracker } from './pages/WeeklyWeightTracker';
+import { WellnessTracker } from './pages/WellnessTracker';
 
 export const App = () => {
   return (
@@ -40,6 +42,8 @@ export const App = () => {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/todo" element={<TodoList />} />
                 <Route path="/notes" element={<Notes />} />
+                <Route path="/weight-tracker" element={<WeeklyWeightTracker />} />
+                <Route path="/wellness" element={<WellnessTracker />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>

@@ -9,6 +9,7 @@ export const DEFAULT_USER_PROFILE = {
   activityLevel: "Moderate (Gym 4-5x/week)",
   targetWaterMl: 2500,
   targetSleepHours: 8,
+  avatar: null, // base64 string or image url
 };
 
 export const DEFAULT_DAILY_HABITS = [

@@ -23,8 +23,13 @@ export const FitLifeQuickActions = () => {
     addWater,
     profile,
     dailyHabits,
-    toggleHabit
+    toggleHabit,
+    toggleFaceMassage,
+    isFaceMassageDone
   } = useFitness();
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const isMassageDoneToday = isFaceMassageDone ? isFaceMassageDone(todayStr) : false;
 
   // Modals for quick overlay interactions
   const [activeModal, setActiveModal] = useState(null); // 'water' | 'habits' | 'wellness' | null
@@ -352,13 +357,33 @@ export const FitLifeQuickActions = () => {
               </div>
             </div>
 
-            <button
-              onClick={() => setActiveModal(null)}
-              className="w-full mt-3 py-2 rounded-xl bg-gradient-to-r from-[#FF4D8D] to-[#F43F5E] text-white font-bold text-xs shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-1.5"
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Tick Complete (5 min)</span>
-            </button>
+            <div className="flex flex-col gap-2 mt-3">
+              <button
+                onClick={() => {
+                  if (toggleFaceMassage) toggleFaceMassage(todayStr);
+                  setActiveModal(null);
+                }}
+                className={`w-full py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-xs ${
+                  isMassageDoneToday
+                    ? 'bg-emerald-500 text-white hover:bg-emerald-600'
+                    : 'bg-gradient-to-r from-[#FF4D8D] to-[#F43F5E] text-white hover:shadow-md active:scale-95'
+                }`}
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>{isMassageDoneToday ? 'Marked Completed Today! ✓' : 'Tick Complete (5 min)'}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveModal(null);
+                  navigate('/wellness');
+                }}
+                className="w-full py-2 rounded-xl bg-purple-50 text-purple-700 font-bold text-xs hover:bg-purple-100 transition-all flex items-center justify-center gap-1.5"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Open Full Routine & History</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

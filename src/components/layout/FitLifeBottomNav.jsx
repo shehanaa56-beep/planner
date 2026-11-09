@@ -12,7 +12,9 @@ import {
   BookOpen,
   Settings,
   CheckSquare,
-  FileText
+  FileText,
+  Scale,
+  Sparkles
 } from 'lucide-react';
 
 export const FitLifeBottomNav = () => {
@@ -27,12 +29,14 @@ export const FitLifeBottomNav = () => {
   ];
 
   const moreItems = [
-    { to: '/library', label: 'Exercise Library', icon: BookOpen, desc: 'Form guides & muscle targets', color: 'bg-purple-50 text-purple-600' },
-    { to: '/journey', label: '12-Week Journey', icon: CalendarDays, desc: '3-phase progressive roadmap', color: 'bg-blue-50 text-blue-600' },
+    { to: '/weight-tracker', label: 'Weekly Weigh-in', icon: Scale, desc: '12-week weight & notes', color: 'bg-indigo-50 text-indigo-600' },
+    { to: '/wellness', label: 'Face Massage', icon: Sparkles, desc: '5-min daily glowing routine', color: 'bg-rose-50 text-rose-600' },
     { to: '/period', label: 'Period Tracker', icon: HeartHandshake, desc: 'Cycle phase workout tips', color: 'bg-pink-50 text-pink-600' },
     { to: '/todo', label: 'To-Do List', icon: CheckSquare, desc: 'Add & track your tasks', color: 'bg-violet-50 text-violet-600' },
     { to: '/notes', label: 'Notes', icon: FileText, desc: 'Save emails & reminders', color: 'bg-amber-50 text-amber-600' },
-    { to: '/settings', label: 'Settings', icon: Settings, desc: 'Profile, weight goals, diet', color: 'bg-gray-100 text-gray-600' },
+    { to: '/journey', label: '12-Week Journey', icon: CalendarDays, desc: '3-phase progressive roadmap', color: 'bg-blue-50 text-blue-600' },
+    { to: '/library', label: 'Exercise Library', icon: BookOpen, desc: 'Form guides & muscle targets', color: 'bg-purple-50 text-purple-600' },
+    { to: '/settings', label: 'Settings & Report', icon: Settings, desc: 'Profile, goals & PDF download', color: 'bg-gray-100 text-gray-700' },
   ];
 
   return (
@@ -44,7 +48,7 @@ export const FitLifeBottomNav = () => {
           onClick={() => setShowMoreDrawer(false)}
         >
           <div
-            className="bg-white rounded-t-3xl p-5 border-t border-pink-100 shadow-2xl max-w-md w-full mx-auto animate-in slide-in-from-bottom-5 duration-200"
+            className="bg-white rounded-t-3xl p-5 border-t border-pink-100 shadow-2xl max-w-md w-full mx-auto max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom-5 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">

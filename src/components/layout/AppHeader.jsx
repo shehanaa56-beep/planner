@@ -22,10 +22,16 @@ export const AppHeader = () => {
     '/journey': '12-Week Journey',
     '/progress': 'Progress Tracker',
     '/period': 'Period Tracker',
+    '/weight-tracker': 'Weekly Weight Log',
+    '/wellness': 'Face Massage & Wellness',
+    '/todo': 'To-Do List',
+    '/notes': 'Important Notes',
     '/settings': 'Profile & Settings',
   };
 
   const pageTitle = titles[location.pathname] || 'FitLife';
+
+  const defaultAvatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80";
 
   return (
     <div className="w-full bg-white/95 backdrop-blur-md border-b border-pink-100/70 sticky top-0 z-30">
@@ -43,11 +49,11 @@ export const AppHeader = () => {
 
         <button
           onClick={() => navigate('/settings')}
-          className="w-9 h-9 rounded-full ring-2 ring-pink-100 shadow-2xs overflow-hidden active:scale-95 transition-transform"
+          className="w-9 h-9 rounded-full ring-2 ring-pink-100 shadow-2xs overflow-hidden active:scale-95 transition-transform bg-white"
           title="Profile Settings"
         >
           <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+            src={profile.avatar || defaultAvatar}
             alt={profile.name || "User"}
             className="w-full h-full object-cover"
           />
