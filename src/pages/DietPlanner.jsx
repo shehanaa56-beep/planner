@@ -17,18 +17,9 @@ const DEFAULT_MEALS = [
 ];
 
 export const DietPlanner = () => {
-  const { selectedDay, setSelectedDay } = useFitness();
+  const { selectedDay, setSelectedDay, dietDayTicks, toggleDietDayMeal } = useFitness();
 
-  // Day-wise ticking state: { [dayKey]: { [mealId]: boolean } }
-  const [dayTicks, setDayTicks] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_DIET_DAY_TICKS);
-      if (saved) return JSON.parse(saved);
-    } catch (e) {
-      console.error(e);
-    }
-    return {};
-  });
+  const dayTicks = dietDayTicks || {};
 
   // Custom food names if user typed what they ate
   const [customFoods, setCustomFoods] = useState(() => {
@@ -46,18 +37,7 @@ export const DietPlanner = () => {
 
   // Toggle meal tick for the selected day
   const toggleMealTick = (mealId) => {
-    setDayTicks(prev => {
-      const dayMeals = prev[selectedDay] || {};
-      const updated = {
-        ...prev,
-        [selectedDay]: {
-          ...dayMeals,
-          [mealId]: !dayMeals[mealId]
-        }
-      };
-      localStorage.setItem(STORAGE_DIET_DAY_TICKS, JSON.stringify(updated));
-      return updated;
-    });
+    toggleDietDayMeal(selectedDay, mealId);
   };
 
   // Start editing what they ate

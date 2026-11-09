@@ -5,10 +5,15 @@ import { useFitness } from '../../context/FitnessContext';
 
 export const FitLifeActivityCards = () => {
   const navigate = useNavigate();
-  const { getWeeklyWorkoutPercentage, getDailyMealPercentage } = useFitness();
+  const { getWeeklyWorkoutStats, getTodayMealStats } = useFitness();
 
-  const workoutPct = getWeeklyWorkoutPercentage();
-  const mealPct = getDailyMealPercentage();
+  const { completedDays, percentage: workoutPct } = getWeeklyWorkoutStats
+    ? getWeeklyWorkoutStats()
+    : { completedDays: 0, percentage: 0 };
+
+  const { completedCount: completedMeals, totalCount: totalMeals, percentage: mealPct } = getTodayMealStats
+    ? getTodayMealStats()
+    : { completedCount: 0, totalCount: 7, percentage: 0 };
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:gap-4">
@@ -27,7 +32,7 @@ export const FitLifeActivityCards = () => {
               </span>
             </div>
             <span className="text-[11px] font-semibold text-[#665870] shrink-0">
-              4 / 6 Done
+              {completedDays} / 6 Done
             </span>
           </div>
 
@@ -35,7 +40,7 @@ export const FitLifeActivityCards = () => {
           <div className="w-full h-2 sm:h-2.5 bg-[#FFE2ED] rounded-full overflow-hidden my-2">
             <div
               className="h-full bg-gradient-to-r from-[#FF4D8D] to-[#F43F5E] rounded-full transition-all duration-500"
-              style={{ width: `${workoutPct || 67}%` }}
+              style={{ width: `${workoutPct}%` }}
             />
           </div>
         </div>
@@ -43,7 +48,7 @@ export const FitLifeActivityCards = () => {
         {/* Bottom Row: Percentage + Circle Arrow */}
         <div className="flex items-center justify-between mt-1">
           <span className="text-xs font-bold text-[#FF4D8D]">
-            {workoutPct || 67}% Complete
+            {workoutPct}% Complete
           </span>
           <div className="w-6 h-6 rounded-full bg-[#FFE5EF] text-[#FF4D8D] flex items-center justify-center group-hover:bg-[#FF4D8D] group-hover:text-white transition-all shadow-2xs">
             <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -66,7 +71,7 @@ export const FitLifeActivityCards = () => {
               </span>
             </div>
             <span className="text-[11px] font-semibold text-[#665870] shrink-0">
-              5 / 7 Meals
+              {completedMeals} / {totalMeals} Meals
             </span>
           </div>
 
@@ -74,7 +79,7 @@ export const FitLifeActivityCards = () => {
           <div className="w-full h-2 sm:h-2.5 bg-[#D1FAE5] rounded-full overflow-hidden my-2">
             <div
               className="h-full bg-gradient-to-r from-[#10B981] to-[#059669] rounded-full transition-all duration-500"
-              style={{ width: `${mealPct || 71}%` }}
+              style={{ width: `${mealPct}%` }}
             />
           </div>
         </div>
@@ -82,7 +87,7 @@ export const FitLifeActivityCards = () => {
         {/* Bottom Row: Percentage + Circle Arrow */}
         <div className="flex items-center justify-between mt-1">
           <span className="text-xs font-bold text-[#10B981]">
-            {mealPct || 71}% Complete
+            {mealPct}% Complete
           </span>
           <div className="w-6 h-6 rounded-full bg-[#D1FAE5] text-[#10B981] flex items-center justify-center group-hover:bg-[#10B981] group-hover:text-white transition-all shadow-2xs">
             <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />

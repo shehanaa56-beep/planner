@@ -5,7 +5,7 @@ import { useFitness } from '../../context/FitnessContext';
 import { MEAL_PLAN_DATA } from '../../data/dietPlan';
 
 export const TodayMealCard = () => {
-  const { mealCompletion, toggleMeal, getDailyMealPercentage } = useFitness();
+  const { mealCompletion, toggleMeal, getDailyMealPercentage, selectedDay, dietDayTicks } = useFitness();
   const navigate = useNavigate();
   const completionPct = getDailyMealPercentage();
 
@@ -48,7 +48,7 @@ export const TodayMealCard = () => {
         {/* Meal Items */}
         <div className="space-y-2.5 mb-4">
           {displayedMeals.map((meal) => {
-            const isCompleted = !!mealCompletion[meal.id];
+            const isCompleted = !!dietDayTicks?.[selectedDay]?.[meal.id] || !!mealCompletion[meal.id];
 
             return (
               <div

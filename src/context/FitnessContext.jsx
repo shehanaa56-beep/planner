@@ -24,7 +24,8 @@ const STORAGE_KEYS = {
   CURRENT_DAY: 'fitlife_selected_day',
   WEEKLY_COMPLETION: 'fitlife_weekly_completion_matrix',
   TODO_LIST: 'fitlife_todo_list',
-  NOTES: 'fitlife_notes'
+  NOTES: 'fitlife_notes',
+  DIET_DAY_TICKS: 'fitlife_diet_day_ticks'
 };
 
 export const FitnessProvider = ({ children }) => {
@@ -58,18 +59,54 @@ export const FitnessProvider = ({ children }) => {
   const [workoutCompletion, setWorkoutCompletion] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.WORKOUT_COMPLETION);
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Clean out legacy mock ticks if present
+        const isLegacyMock = parsed?.monday?.['mon-1'] && parsed?.monday?.['mon-2'] && parsed?.wednesday?.['wed-1'];
+        if (isLegacyMock) {
+          localStorage.removeItem(STORAGE_KEYS.WORKOUT_COMPLETION);
+          return {};
+        }
+        return parsed;
+      }
     } catch (e) {
       console.error(e);
     }
     return {};
   });
 
-  // 3. Meal Completion: Object { [mealId]: boolean }
+  // 3. Diet Day Ticks: Object { [day]: { [mealId]: boolean } }
+  const [dietDayTicks, setDietDayTicks] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.DIET_DAY_TICKS);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Clean out legacy mock ticks if present
+        const isLegacyMock = parsed?.monday?.['early-morning'] && parsed?.monday?.['breakfast'];
+        if (isLegacyMock) {
+          localStorage.removeItem(STORAGE_KEYS.DIET_DAY_TICKS);
+          return {};
+        }
+        return parsed;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return {};
+  });
+
+  // Legacy Meal Completion (kept for backward compatibility with TodayMealCard)
   const [mealCompletion, setMealCompletion] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.MEAL_COMPLETION);
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.['early-morning'] && parsed?.['breakfast']) {
+          localStorage.removeItem(STORAGE_KEYS.MEAL_COMPLETION);
+          return {};
+        }
+        return parsed;
+      }
     } catch (e) {
       console.error(e);
     }
@@ -190,6 +227,10 @@ export const FitnessProvider = ({ children }) => {
   }, [mealCompletion]);
 
   useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.DIET_DAY_TICKS, JSON.stringify(dietDayTicks));
+  }, [dietDayTicks]);
+
+  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.MEAL_SELECTIONS, JSON.stringify(mealSelections));
   }, [mealSelections]);
 
@@ -286,6 +327,67 @@ export const FitnessProvider = ({ children }) => {
     return totalExercises > 0 ? Math.round((completedExercises / totalExercises) * 100) : 0;
   };
 
+  // Get detailed weekly workout stats
+  const getWeeklyWorkoutStats = () => {
+    const workoutDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const completedDays = workoutDays.filter(day => {
+      const dayData = WEEKLY_WORKOUT_SCHEDULE[day];
+      if (!dayData || !dayData.exercises || dayData.exercises.length === 0) return false;
+      const dayProg = workoutCompletion[day] || {};
+      return dayData.exercises.length > 0 && dayData.exercises.every(ex => !!dayProg[ex.id]);
+    }).length;
+
+    let totalExercises = 0;
+    let completedExercises = 0;
+    workoutDays.forEach(day => {
+      const dayData = WEEKLY_WORKOUT_SCHEDULE[day];
+      if (dayData && dayData.exercises) {
+        totalExercises += dayData.exercises.length;
+        const dayProg = workoutCompletion[day] || {};
+        completedExercises += dayData.exercises.filter(ex => !!dayProg[ex.id]).length;
+      }
+    });
+
+    const percentage = totalExercises > 0 ? Math.round((completedExercises / totalExercises) * 100) : 0;
+    return {
+      completedDays,
+      totalDays: 6,
+      completedExercises,
+      totalExercises,
+      percentage
+    };
+  };
+
+  // Diet Day Meal Actions (unified with DietPlanner)
+  const toggleDietDayMeal = (day, mealId) => {
+    setDietDayTicks(prev => {
+      const dayMeals = prev[day] || {};
+      const nextVal = !dayMeals[mealId];
+      if (nextVal) triggerCelebration();
+      return {
+        ...prev,
+        [day]: {
+          ...dayMeals,
+          [mealId]: nextVal
+        }
+      };
+    });
+  };
+
+  // Get today's meal stats
+  const getTodayMealStats = () => {
+    const dayKey = selectedDay || getTodayDayKey();
+    const currentDayMeals = dietDayTicks[dayKey] || {};
+    const totalCount = 7;
+    const completedCount = Object.values(currentDayMeals).filter(Boolean).length;
+    const percentage = Math.round((completedCount / totalCount) * 100);
+    return {
+      completedCount,
+      totalCount,
+      percentage
+    };
+  };
+
   // Meal Actions
   const toggleMeal = (mealId) => {
     setMealCompletion(prev => {
@@ -296,6 +398,8 @@ export const FitnessProvider = ({ children }) => {
         [mealId]: updated
       };
     });
+    // Also toggle in dietDayTicks for today
+    toggleDietDayMeal(selectedDay || getTodayDayKey(), mealId);
   };
 
   const selectMealOption = (mealId, optionId) => {
@@ -306,9 +410,7 @@ export const FitnessProvider = ({ children }) => {
   };
 
   const getDailyMealPercentage = () => {
-    const totalMeals = MEAL_PLAN_DATA.length;
-    const completedMeals = MEAL_PLAN_DATA.filter(m => !!mealCompletion[m.id]).length;
-    return Math.round((completedMeals / totalMeals) * 100);
+    return getTodayMealStats().percentage;
   };
 
   // Water Actions
@@ -435,6 +537,7 @@ export const FitnessProvider = ({ children }) => {
     setProfile(DEFAULT_USER_PROFILE);
     setSelectedDay(getTodayDayKey());
     setWorkoutCompletion({});
+    setDietDayTicks({});
     setMealCompletion({});
     setMealSelections({});
     setWaterIntakeMl(0);
@@ -457,6 +560,10 @@ export const FitnessProvider = ({ children }) => {
         toggleExercise,
         getDayWorkoutPercentage,
         getWeeklyWorkoutPercentage,
+        getWeeklyWorkoutStats,
+        dietDayTicks,
+        toggleDietDayMeal,
+        getTodayMealStats,
         mealCompletion,
         toggleMeal,
         mealSelections,
